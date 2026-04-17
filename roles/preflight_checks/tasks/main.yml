@@ -1,0 +1,88 @@
+---
+# -----------------------------
+# RPM PACKAGE CHECK
+# -----------------------------
+- name: Check installed RPM packages
+  shell: |
+    for x in {{ rpm_packages | join(' ') }}; do
+        rpm -qa | grep -F "$x" || echo "$x NOT INSTALLED"
+    done
+  register: rpm_check
+
+- name: Show RPM results
+  debug:
+    var: rpm_check.stdout_lines
+
+# -----------------------------
+# CONTAINER RUNTIME CHECK
+# -----------------------------
+- name: Check container runtimes
+  shell: |
+    for x in podman docker containerd crio; do
+        which $x || echo "$x NOT FOUND"
+    done
+  register: runtime_check
+
+- name: Show runtime results
+  debug:
+    var: runtime_check.stdout_lines
+
+# -----------------------------
+# REQUIRED TOOLS CHECK
+# -----------------------------
+- name: Check required tools
+  shell: |
+    for x in {{ required_tools | join(' ') }}; do
+        which $x || echo "$x NOT FOUND"
+    done
+  register: tools_check
+
+- name: Show tools check
+  debug:
+    var: tools_check.stdout_lines
+
+# -----------------------------
+# KERNEL MODULES
+# -----------------------------
+- name: Check br_netfilter module
+  shell: lsmod | grep br_netfilter || echo "br_netfilter NOT LOADED"
+  register: kernel_check
+
+- debug:
+    var: kernel_check.stdout_lines
+
+# -----------------------------
+# SYSCTL CHECK
+# -----------------------------
+- name: Check sysctl settings
+  shell: |
+    sysctl net.ipv4.ip_forward
+    sysctl net.bridge.bridge-nf-call-iptables || echo "bridge setting not found"
+  register: sysctl_check
+
+- debug:
+    var: sysctl_check.stdout_lines
+
+# -----------------------------
+# SWAP CHECK
+# -----------------------------
+- name: Check swap
+  command: swapon --show
+  register: swap_check
+
+- debug:
+    var: swap_check.stdout_lines
+
+- name: Disable swap (runtime only)
+  command: swapoff -a
+  when: swap_check.stdout != ""
+
+# -----------------------------
+# CGROUP CHECK
+# -----------------------------
+- name: Check cgroups
+  shell: mount | grep cgroup
+  register: cgroup_check
+
+- debug:
+    var: cgroup_check.stdout_lines

@@ -1,0 +1,7 @@
+---
+- name: ACP Installation - Preflight Phase
+  hosts: all
+  become: true
+
+  roles:
+    - preflight_checks

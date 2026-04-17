@@ -1,0 +1,22 @@
+---
+rpm_packages:
+  - docker
+  - docker-client
+  - docker-common
+  - docker-latest
+  - podman-docker
+  - podman
+  - runc
+  - containernetworking-plugins
+  - apptainer
+  - kubernetes
+  - kubernetes-master
+  - kubernetes-node
+  - kubernetes-client
+
+required_tools:
+  - curl
+  - socat
+  - conntrack
+  - iptables
+  - awk

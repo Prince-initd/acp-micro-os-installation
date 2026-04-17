@@ -1,0 +1,114 @@
+name: Check RCHSA LAB
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Terraform Plan (Validation)
+    runs-on: ubuntu-latest
+
+    env:
+      TF_IN_AUTOMATION: "true"
+      TF_INPUT: "false"
+      TF_OUTPUT_FILE: ./tf-output.json
+      JUMP_HOST: ${{ secrets.JUMP_HOST }}
+      SSH_USER: core
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up SSH keys
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.JUMP_PUBLIC_KEY }}" > ~/.ssh/jump_key.pub
+          echo "${{ secrets.JUMP_PRIVATE_KEY }}" > ~/.ssh/jump_key
+
+      - name: Add cloud host to known_hosts
+        run: |
+          ssh-keyscan -H "$(echo "$JUMP_HOST" | cut -d@ -f2)" >> ~/.ssh/known_hosts
+
+      - name: Install Terraform
+        run: |
+          TERRAFORM_VERSION="1.8.4"
+          curl -LO "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+          unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+          sudo mv terraform /usr/local/bin/
+          terraform version
+      - name: Make check script executable
+        run: chmod +x ./scripts/check.sh
+
+      - name: Run deploy script
+        run: |
+          export JUMP_KEY=~/.ssh/jump_key
+          export SSH_KEY_PATH=~/.ssh/jump_key.pub
+          export SSHPASS=${{ secrets.SSHPASS }}
+          export ROOT_PASSWORD=${{ secrets.ROOT_PASSWORD }}
+          export STUDENT_PASSWORD=${{ secrets.STUDENT_PASSWORD }}
+          export TF_VAR_root_password=${{ secrets.VM_ROOT_PASSWORD }}
+          export TF_VAR_student_password=${{ secrets.VM_STUDENT_PASSWORD }}
+          export TF_VAR_admin_user="core"
+          export TF_VAR_remote_host="$JUMP_HOST"
+          export TF_VAR_ssh_private_key="~/.ssh/jump_key"
+          # S3 / MinIO backend
+          export S3_BUCKET=${{ secrets.TF_STATE_BUCKET }}
+          export S3_REGION=${{ secrets.TF_STATE_REGION }}
+          export S3_ENDPOINT=${{ secrets.TF_STATE_ENDPOINT }}
+          export S3_ACCESS_KEY=${{ secrets.TF_STATE_ACCESS_KEY }}
+          export S3_SECRET_KEY=${{ secrets.TF_STATE_SECRET_KEY }}
+          chmod 700 ~/.ssh
+          ./scripts/check.sh \
+            -b "$S3_BUCKET" \
+            -r "$S3_REGION" \
+            -e "$S3_ENDPOINT" \
+            -a "$S3_ACCESS_KEY" \
+            -s "$S3_SECRET_KEY"
+
+  telegram_notify:
+    needs: check
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Send Telegram notification
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+
+            ${{ format('{0} K8 Alauda Infrastructure Validation Complete!', needs.check.result == 'success' && '✅' || '❌') }}
+
+            👤 Check by: ${{ github.actor }}
+
+            📝 Commit: ${{ github.event.commits[0].message }}
+
+
+            🔍 View changes: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+
+  ms_teams_notify:
+    needs: check
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - uses: actions/checkout@v4
+      # this is the new step using the ms-teams-notification action
+      - name: Notify dedicated teams channel
+        uses: jdcargile/ms-teams-notification@v1.4
+        with:
+          github-token: ${{ secrets.GIT_TOKEN }}
+          ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+          notification-summary: |
+            ${{ format('{0} K8 Alauda Infrastructure Validation Complete!', needs.check.result == 'success' && '✅' || '❌') }}
+
+            👤 Check by: ${{ github.actor }}
+
+            📝 Commit: ${{ github.event.commits[0].message }}
+
+            🔍 View changes: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+          notification-color: ${{ needs.check.result == 'success' && '17a2b8' || 'b81917' }}
+          timezone: Africa/Johannesburg
+          verbose-logging: true

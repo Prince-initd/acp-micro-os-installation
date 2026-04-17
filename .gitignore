@@ -1,0 +1,19 @@
+.inventory.yml
+iso/
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+terraform.tfvars
+*.tfvars
+tf-output.json
+
+# SSH keys
+*.pem
+*.key
+*.pub
+jump_key*
+vm_key*
+
+# Script outputs
+scripts/*.log

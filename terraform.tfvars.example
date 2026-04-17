@@ -1,0 +1,13 @@
+# terraform.tfvars.example
+admin_user      = "core"
+remote_host     = "user@your-hypervisor-host.com"
+ssh_private_key = "~/.ssh/jump_key"
+root_password   = "opensuse123"
+student_password = "student123"
+
+# Resource allocation for 64GB/12 core host
+master_memory   = 4096  # 4GB per master
+master_vcpu     = 2     # 2 vCPUs per master
+worker_memory   = 2048  # 2GB per worker
+worker_vcpu     = 1     # 1 vCPU per worker
+vm_volume_size  = 21474836480  # 20GB
