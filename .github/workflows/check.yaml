@@ -15,7 +15,7 @@ jobs:
       TF_INPUT: "false"
       TF_OUTPUT_FILE: ./tf-output.json
       JUMP_HOST: ${{ secrets.JUMP_HOST }}
-      SSH_USER: admin
+      SSH_USER: core
 
     steps:
       - name: Checkout repository
@@ -50,7 +50,7 @@ jobs:
           export STUDENT_PASSWORD=${{ secrets.STUDENT_PASSWORD }}
           export TF_VAR_root_password=${{ secrets.VM_ROOT_PASSWORD }}
           export TF_VAR_student_password=${{ secrets.VM_STUDENT_PASSWORD }}
-          export TF_VAR_admin_user="core"
+          export TF_VAR_admin_user="root"
           export TF_VAR_remote_host="$JUMP_HOST"
           export TF_VAR_ssh_private_key="~/.ssh/jump_key"
           # S3 / MinIO backend
