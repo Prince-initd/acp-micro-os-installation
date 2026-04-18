@@ -224,7 +224,7 @@ resource "libvirt_cloudinit_disk" "cloudinit_master1" {
 
   user_data = <<-EOF
 #cloud-config
-hostname: master-1
+hostname: TZUSDSRAPP0001
 
 users:
   - name: student
@@ -256,8 +256,8 @@ runcmd:
 EOF
 
   meta_data = <<-EOF
-instance-id: master-1
-local-hostname: master-1
+instance-id: TZUSDSRAPP0001
+local-hostname: TZUSDSRAPP0001
 EOF
 
   network_config = <<-EOF
@@ -279,7 +279,7 @@ resource "libvirt_cloudinit_disk" "cloudinit_master2" {
 
   user_data = <<-EOF
 #cloud-config
-hostname: master-2
+hostname: TZUSDSRAPP0002
 
 users:
   - name: student
@@ -310,8 +310,8 @@ runcmd:
 EOF
 
   meta_data = <<-EOF
-instance-id: master-2
-local-hostname: master-2
+instance-id: TZUSDSRAPP0002
+local-hostname: TZUSDSRAPP0002
 EOF
 
   network_config = <<-EOF
@@ -333,7 +333,7 @@ resource "libvirt_cloudinit_disk" "cloudinit_master3" {
 
   user_data = <<-EOF
 #cloud-config
-hostname: master-3
+hostname: TZUSDSRAPP0003
 
 users:
   - name: student
@@ -364,8 +364,8 @@ runcmd:
 EOF
 
   meta_data = <<-EOF
-instance-id: master-3
-local-hostname: master-3
+instance-id: TZUSDSRAPP0003
+local-hostname: TZUSDSRAPP0003
 EOF
 
   network_config = <<-EOF
@@ -392,7 +392,7 @@ resource "libvirt_cloudinit_disk" "cloudinit_worker1" {
 
   user_data = <<-EOF
 #cloud-config
-hostname: worker-1
+hostname: TZUSDSRAPP0004
 
 users:
   - name: student
@@ -422,8 +422,8 @@ runcmd:
 EOF
 
   meta_data = <<-EOF
-instance-id: worker-1
-local-hostname: worker-1
+instance-id: TZUSDSRAPP0004
+local-hostname: TZUSDSRAPP0004
 EOF
 
   network_config = <<-EOF
@@ -445,7 +445,7 @@ resource "libvirt_cloudinit_disk" "cloudinit_worker2" {
 
   user_data = <<-EOF
 #cloud-config
-hostname: worker-2
+hostname: TZUSDSRAPP0005
 
 users:
   - name: student
@@ -475,8 +475,8 @@ runcmd:
 EOF
 
   meta_data = <<-EOF
-instance-id: worker-2
-local-hostname: worker-2
+instance-id: TZUSDSRAPP0005
+local-hostname: TZUSDSRAPP0005
 EOF
 
   network_config = <<-EOF
@@ -498,7 +498,7 @@ resource "libvirt_cloudinit_disk" "cloudinit_worker3" {
 
   user_data = <<-EOF
 #cloud-config
-hostname: worker-3
+hostname: TZUSDSRAPP0006
 
 users:
   - name: student
@@ -528,8 +528,8 @@ runcmd:
 EOF
 
   meta_data = <<-EOF
-instance-id: worker-3
-local-hostname: worker-3
+instance-id: TZUSDSRAPP0006
+local-hostname: TZUSDSRAPP0006
 EOF
 
   network_config = <<-EOF
@@ -551,7 +551,7 @@ resource "libvirt_cloudinit_disk" "cloudinit_worker4" {
 
   user_data = <<-EOF
 #cloud-config
-hostname: worker-4
+hostname: TZUSDSRAPP0007
 
 users:
   - name: student
@@ -581,8 +581,8 @@ runcmd:
 EOF
 
   meta_data = <<-EOF
-instance-id: worker-4
-local-hostname: worker-4
+instance-id: TZUSDSRAPP0007
+local-hostname: TZUSDSRAPP0007
 EOF
 
   network_config = <<-EOF
@@ -604,7 +604,7 @@ resource "libvirt_cloudinit_disk" "cloudinit_worker5" {
 
   user_data = <<-EOF
 #cloud-config
-hostname: worker-5
+hostname: TZUSDSRAPP0008
 
 users:
   - name: student
@@ -634,8 +634,8 @@ runcmd:
 EOF
 
   meta_data = <<-EOF
-instance-id: worker-5
-local-hostname: worker-5
+instance-id: TZUSDSRAPP0008
+local-hostname: TZUSDSRAPP0008
 EOF
 
   network_config = <<-EOF
@@ -657,7 +657,7 @@ resource "libvirt_cloudinit_disk" "cloudinit_worker6" {
 
   user_data = <<-EOF
 #cloud-config
-hostname: worker-6
+hostname: TZUSDSRAPP0009
 
 users:
   - name: student
@@ -687,8 +687,8 @@ runcmd:
 EOF
 
   meta_data = <<-EOF
-instance-id: worker-6
-local-hostname: worker-6
+instance-id: TZUSDSRAPP0009
+local-hostname: TZUSDSRAPP0009
 EOF
 
   network_config = <<-EOF
@@ -820,7 +820,7 @@ resource "libvirt_volume" "cloudinit_worker6_volume" {
 # ===================================================
 
 resource "libvirt_domain" "master1" {
-  name   = "master-1"
+  name   = "TZUSDSRAPP0001"
   memory = var.master_memory
   vcpu   = var.master_vcpu
   type   = "kvm"
@@ -904,7 +904,7 @@ resource "libvirt_domain" "master1" {
 }
 
 resource "libvirt_domain" "master2" {
-  name   = "master-2"
+  name   = "TZUSDSRAPP0002"
   memory = var.master_memory
   vcpu   = var.master_vcpu
   type   = "kvm"
@@ -988,7 +988,7 @@ resource "libvirt_domain" "master2" {
 }
 
 resource "libvirt_domain" "master3" {
-  name   = "master-3"
+  name   = "TZUSDSRAPP0003"
   memory = var.master_memory
   vcpu   = var.master_vcpu
   type   = "kvm"
@@ -1077,7 +1077,7 @@ resource "libvirt_domain" "master3" {
 # ===================================================
 
 resource "libvirt_domain" "worker1" {
-  name   = "worker-1"
+  name   = "TZUSDSRAPP0004"
   memory = var.worker_memory
   vcpu   = var.worker_vcpu
   type   = "kvm"
@@ -1161,7 +1161,7 @@ resource "libvirt_domain" "worker1" {
 }
 
 resource "libvirt_domain" "worker2" {
-  name   = "worker-2"
+  name   = "TZUSDSRAPP0005"
   memory = var.worker_memory
   vcpu   = var.worker_vcpu
   type   = "kvm"
@@ -1245,7 +1245,7 @@ resource "libvirt_domain" "worker2" {
 }
 
 resource "libvirt_domain" "worker3" {
-  name   = "worker-3"
+  name   = "TZUSDSRAPP0006"
   memory = var.worker_memory
   vcpu   = var.worker_vcpu
   type   = "kvm"
@@ -1329,7 +1329,7 @@ resource "libvirt_domain" "worker3" {
 }
 
 resource "libvirt_domain" "worker4" {
-  name   = "worker-4"
+  name   = "TZUSDSRAPP0007"
   memory = var.worker_memory
   vcpu   = var.worker_vcpu
   type   = "kvm"
@@ -1413,7 +1413,7 @@ resource "libvirt_domain" "worker4" {
 }
 
 resource "libvirt_domain" "worker5" {
-  name   = "worker-5"
+  name   = "TZUSDSRAPP0008"
   memory = var.worker_memory
   vcpu   = var.worker_vcpu
   type   = "kvm"
@@ -1497,7 +1497,7 @@ resource "libvirt_domain" "worker5" {
 }
 
 resource "libvirt_domain" "worker6" {
-  name   = "worker-6"
+  name   = "TZUSDSRAPP0009"
   memory = var.worker_memory
   vcpu   = var.worker_vcpu
   type   = "kvm"

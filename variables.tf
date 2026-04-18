@@ -29,7 +29,7 @@ variable "student_password" {
 variable "master_memory" {
   description = "Memory in MB for each master node (3 masters total)"
   type        = number
-  default     = 4096 # 4GB per master = 12GB total for masters
+  default     = 4194304 # 4GB per master = 12GB total for masters
 }
 
 variable "master_vcpu" {
@@ -42,7 +42,7 @@ variable "master_vcpu" {
 variable "worker_memory" {
   description = "Memory in MB for each worker node (6 workers total)"
   type        = number
-  default     = 2048 # 2GB per worker = 12GB total for workers
+  default     = 2097152 # 2GB per worker = 12GB total for workers
 }
 
 variable "worker_vcpu" {
