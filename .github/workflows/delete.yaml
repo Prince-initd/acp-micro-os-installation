@@ -12,7 +12,7 @@ jobs:
       TF_IN_AUTOMATION: "true"
       TF_INPUT: "false"
       JUMP_HOST: ${{ secrets.JUMP_HOST }}
-      SSH_USER: core
+      SSH_USER: admin
 
     steps:
       - name: Checkout repo

@@ -13,7 +13,7 @@ jobs:
     env:
       TF_OUTPUT_FILE: ./tf-output.json
       JUMP_HOST: ${{ secrets.JUMP_HOST }}
-      SSH_USER: core
+      SSH_USER: admin
 
     steps:
       - name: Checkout repo
