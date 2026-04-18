@@ -102,7 +102,7 @@ terraform_init() {
     export AWS_ENDPOINT_URL_S3="$S3_ENDPOINT"
     export AWS_S3_FORCE_PATH_STYLE=true
     export AWS_EC2_METADATA_DISABLED=true
-    export TF_VAR_admin_user="${SSH_USER:-core}"
+    export TF_VAR_admin_user="${SSH_USER:-admin}"
     export TF_VAR_remote_host="$JUMP_HOST"
     export TF_VAR_ssh_private_key="$JUMP_KEY"
     export TF_VAR_root_password="${ROOT_PASSWORD:-opensuse123}"
