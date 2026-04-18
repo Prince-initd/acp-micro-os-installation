@@ -1,4 +1,4 @@
-name: Deploy RCHSA LAB
+name: Deploy ACP K8 Lab
 
 on:
   push:

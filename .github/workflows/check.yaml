@@ -1,4 +1,4 @@
-name: Check RCHSA LAB
+name: Check ACP K8 Lab
 
 on:
   push:

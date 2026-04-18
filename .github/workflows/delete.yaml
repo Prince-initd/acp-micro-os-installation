@@ -1,4 +1,4 @@
-name: Destroy RCHSA LAB
+name: Destroy ACP K8 Lab
 
 on:
   workflow_dispatch:
