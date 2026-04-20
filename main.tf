@@ -224,54 +224,47 @@ resource "libvirt_cloudinit_disk" "cloudinit_master1" {
 
   user_data = <<-EOF
 #cloud-config
-hostname: TZUSDSRAPP0001
-
-users:
-  - name: student
-    sudo: ['ALL=(ALL) NOPASSWD:ALL']
-    shell: /bin/bash
-    passwd: $6$rounds=656000$randomhash$studentpasswordhash
-
 ssh_pwauth: true
 disable_root: false
+ssh_deletekeys: False
+ssh_pwauth: True
+ssh_authorized_keys:
+  - ssh-rsa ${var.ssh_public_key} ${var.ssh_public_key_email}
 
 chpasswd:
   list: |
     root:${var.root_password}
-    student:${var.student_password}
+    admin:${var.student_password}
   expire: false
 
-packages:
-  - vim
-  - curl
-  - wget
-  - net-tools
-  - iputils
-  - sudo
-  - python3
-
-runcmd:
-  - systemctl enable --now sshd
-  - echo "openSUSE MicroOS Master Node Ready"
+zypper:
+  repos:
+    - id: tumbleweed-oss
+      name: os-oss
+      baseurl: http://download.opensuse.org/tumbleweed/repo/oss/
+      enabled: 1
+      autorefresh: 1
+    - id: tumbleweed-update
+      name: os-update
+      baseurl: http://download.opensuse.org/update/tumbleweed/
+      enabled: 1
+      autorefresh: 1
+  config:
+    download.use_deltarpm: true
 EOF
 
   meta_data = <<-EOF
 instance-id: TZUSDSRAPP0001
 local-hostname: TZUSDSRAPP0001
+network-interfaces: |
+  auto eth0
+  iface eth0 inet static
+  address 172.168.122.21
+  network 172.168.122.1
+  netmask 255.255.255.0
+
 EOF
 
-  network_config = <<-EOF
-version: 2
-ethernets:
-  eth0:
-    addresses:
-      - 172.168.122.21/24
-    routes:
-      - to: 0.0.0.0/0
-        via: 172.168.122.1
-    nameservers:
-      addresses: [172.168.122.1, 8.8.8.8]
-EOF
 }
 
 resource "libvirt_cloudinit_disk" "cloudinit_master2" {
@@ -292,7 +285,7 @@ disable_root: false
 chpasswd:
   list: |
     root:${var.root_password}
-    student:${var.student_password}
+    admin:${var.student_password}
   expire: false
 
 packages:
@@ -346,7 +339,7 @@ disable_root: false
 chpasswd:
   list: |
     root:${var.root_password}
-    student:${var.student_password}
+    admin:${var.student_password}
   expire: false
 
 packages:
@@ -405,7 +398,7 @@ disable_root: false
 chpasswd:
   list: |
     root:${var.root_password}
-    student:${var.student_password}
+    admin:${var.student_password}
   expire: false
 
 packages:
@@ -458,7 +451,7 @@ disable_root: false
 chpasswd:
   list: |
     root:${var.root_password}
-    student:${var.student_password}
+    admin:${var.student_password}
   expire: false
 
 packages:
@@ -511,7 +504,7 @@ disable_root: false
 chpasswd:
   list: |
     root:${var.root_password}
-    student:${var.student_password}
+    admin:${var.student_password}
   expire: false
 
 packages:
@@ -564,7 +557,7 @@ disable_root: false
 chpasswd:
   list: |
     root:${var.root_password}
-    student:${var.student_password}
+    admin:${var.student_password}
   expire: false
 
 packages:
@@ -617,7 +610,7 @@ disable_root: false
 chpasswd:
   list: |
     root:${var.root_password}
-    student:${var.student_password}
+    admin:${var.student_password}
   expire: false
 
 packages:
@@ -670,7 +663,7 @@ disable_root: false
 chpasswd:
   list: |
     root:${var.root_password}
-    student:${var.student_password}
+    admin:${var.student_password}
   expire: false
 
 packages:
